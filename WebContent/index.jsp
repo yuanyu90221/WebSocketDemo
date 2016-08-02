@@ -1,3 +1,4 @@
+<%@page language="java" contentType="text/html; charset=UTF8" pageEncoding="UTF8"%>
 <!DOCTYPE html>
 <html lang="zh">
     <head>
@@ -55,8 +56,10 @@
         </style>
         <link href="./css/bootstrap-responsive.css" rel="stylesheet">
         <script>
+            var serviceUri ='ws://'+'<%=request.getServerName()+":"+request.getServerPort()+request.getContextPath()%>'+'/chat/';
+          
             var webSocket;
-            var serviceUri ="ws://192.168.4.163:8080/WebSocketDemo/chat/";
+           // var serviceUri ="ws:// 192.168.0.2:8080/WebSocketDemo/chat/";
             var $nickName;
             var $message;
             var $chatWindow;
@@ -157,8 +160,8 @@
                     <legend>輸入你的訊息...</legend>
                     <div class="controls">
                         <input type="text" class="input-block-level" placeholder="Your message..." id="message" style="height:60px"/>
-			<input type="submit" class="btn btn-large btn-block btn-primary" value="Send message" />
-			<button class="btn btn-large btn-block" type="button" id="leave-room">離開聊天室</button>
+						<input type="submit" class="btn btn-large btn-block btn-primary" value="Send message" />
+						<button class="btn btn-large btn-block" type="button" id="leave-room">離開聊天室</button>
                     </div>
                 </fieldset>
             </form>
