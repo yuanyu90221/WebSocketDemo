@@ -57,13 +57,15 @@
         <link href="./css/bootstrap-responsive.css" rel="stylesheet">
         <script>
             var serviceUri ='ws://'+'<%=request.getServerName()+":"+request.getServerPort()+request.getContextPath()%>'+'/chat/';
-          
+            var timeSocketUri ='ws://'+'<%=request.getServerName()+":"+request.getServerPort()+request.getContextPath()%>'+'/time/';
             var webSocket;
+            var timeSocket;
            // var serviceUri ="ws:// 192.168.0.2:8080/WebSocketDemo/chat/";
             var $nickName;
             var $message;
             var $chatWindow;
             var room = '';
+            var $time;
             
             function onMessageReceived(evt){
                 var msg = JSON.parse(evt.data);
@@ -89,6 +91,8 @@
                 webSocket = new WebSocket(serviceUri + room);
                 webSocket.onmessage = onMessageReceived;
                 webSocket.onopen = enterRoom;
+                timeSocket = new WebSocket(timeSocketUri + nickname_id);
+                timeSocket.onmessage = onTime;
                // enterRoom();
             }
             
@@ -107,10 +111,16 @@
                 webSocket.send(msg);
             }
             
+            function onTime(evt){
+            	var msg = evt.data;
+            	//console.log(msg);
+            	$time.html(msg);
+            }
             $(document).ready(function(){
                 $nickName = $('#nickname');
                 $message = $('#message');
                 $chatWindow = $('#response');
+                $time = $("#time");
                 $('.chat-wrapper').hide();
                 $nickName.focus();
                 
@@ -155,7 +165,9 @@
         <div class="container chat-wrapper">
             <form id="do-chat">
                 <h2 class="alert alert-success"></h2>
+                <div id="time" class="alert alert-success"></div>
                 <table id="response" class="table table-bordered"></table>
+                
                 <fieldset>
                     <legend>輸入你的訊息...</legend>
                     <div class="controls">
